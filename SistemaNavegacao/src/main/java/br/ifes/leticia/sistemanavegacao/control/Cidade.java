@@ -5,15 +5,15 @@
  */
 package br.ifes.leticia.sistemanavegacao.control;
 
-import java.util.Objects;
 
 /**
  *
  * @author Leticia
  */
 public class Cidade {
-    private String nome;
-    private double latitude, longitude;
+    private final String nome;
+    private final double latitude;
+    private final double longitude;
 
     public Cidade(String nome, double latitude, double longitude) {
         this.nome = nome;
@@ -21,56 +21,38 @@ public class Cidade {
         this.longitude = longitude;
     }
 
-    @Override
-    public String toString() {
-        return "Cidade{" + "nome=" + nome + '}';
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 53 * hash + Objects.hashCode(this.nome);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Cidade other = (Cidade) obj;
-        if (!Objects.equals(this.getNome(), other.getNome())) {
-            return false;
-        }
-        return true;
-    }
-    
-
     public String getNome() {
         return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
     public double getLongitude() {
         return longitude;
     }
+    
+    @Override
+    public String toString() {
+        return "Cidade "+ getNome();
+    }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    @Override
+    public int hashCode() {
+        return getNome().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Cidade)) {
+            return false;
+        }
+        final Cidade other = (Cidade) obj;
+        return getNome().equals(other.getNome());
     }
     
 }
