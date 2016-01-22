@@ -17,10 +17,11 @@ import java.util.Stack;
  *
  * @author Leticia
  */
-public class AvaliadorDirecional {
+public abstract class AbstractAvaliadorDirecional implements Expressao{
     private final Map<String, Cidade> cidades;
+    protected Expressao proximo;
     
-    public AvaliadorDirecional(){
+    public AbstractAvaliadorDirecional(){
         cidades = new HashMap<>();
         
         cidades.put("aberdeen", new Cidade("Aberdeen", 57.15, -2.15));
@@ -36,7 +37,26 @@ public class AvaliadorDirecional {
         
     }
     
-    public Cidade avaliacao(String rota){
+    public static Cidade processar(String entrada){
+        
+        Expressao leste = new MaisLeste(null);
+        Expressao norte = new MaisNorte(null);
+        Expressao oeste = new MaisOeste(null);
+        Expressao sul = new MaisSul(null);
+        leste.proximaExpressao(norte);
+        norte.proximaExpressao(oeste);
+        oeste.proximaExpressao(sul);
+        
+        return leste.interpreter(entrada);
+    }
+    
+    @Override
+    public void proximaExpressao(Expressao proximo) {
+        this.proximo = proximo;
+    }
+    
+    @Override
+    public Cidade interpreter(String rota){
         Stack<Expressao> expressaoStack = new Stack<>();
         
         for (String token: rota.split(" ")){
@@ -57,7 +77,7 @@ public class AvaliadorDirecional {
                 expressaoStack.push(new MaisOeste(carregarExpressoes(expressaoStack)));
             }
         }
-        return expressaoStack.pop().interpreter();
+        return expressaoStack.pop().interpreter(rota);
     }
     
     private List<Expressao> carregarExpressoes(Stack<Expressao> expressoesStack){

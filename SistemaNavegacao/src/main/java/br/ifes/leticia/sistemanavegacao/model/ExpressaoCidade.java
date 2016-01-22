@@ -20,8 +20,13 @@ public class ExpressaoCidade implements Expressao{
     }
     
     @Override
-    public Cidade interpreter() {
+    public Cidade interpreter(String rota) {
         return cidade;
+    }
+
+    @Override
+    public void proximaExpressao(Expressao proximo) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

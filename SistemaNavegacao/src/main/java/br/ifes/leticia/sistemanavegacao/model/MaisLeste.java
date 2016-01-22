@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Leticia
  */
-public class MaisLeste implements Expressao{
+public class MaisLeste extends AbstractAvaliadorDirecional{
     private final List<Expressao> expressoes;
     
     public MaisLeste(List<Expressao> expressions) {
@@ -21,15 +21,15 @@ public class MaisLeste implements Expressao{
     }
     
     @Override
-    public Cidade interpreter() {
+    public Cidade interpreter(String rota) {
         Cidade cidadeResultante = new Cidade("Qualquer Lugar", -999.99, -999.99);
         for (Expressao expressaoAtual: expressoes){
-            Cidade cidadeAtual = expressaoAtual.interpreter();
+            Cidade cidadeAtual = expressaoAtual.interpreter(rota);
             if (cidadeAtual.getLatitude() > cidadeResultante.getLatitude()){
                 cidadeResultante = cidadeAtual;
             }
         }
         return cidadeResultante;
     }
-    
+
 }

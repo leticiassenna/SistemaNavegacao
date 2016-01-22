@@ -10,5 +10,6 @@ package br.ifes.leticia.sistemanavegacao.control;
  * @author Leticia
  */
 public interface Expressao {
-    public Cidade interpreter();
+    public Cidade interpreter(String rota);
+    public void proximaExpressao(Expressao proximo);
 }
