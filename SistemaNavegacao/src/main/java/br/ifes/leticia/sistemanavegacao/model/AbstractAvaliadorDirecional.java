@@ -19,22 +19,23 @@ public abstract class AbstractAvaliadorDirecional implements Expressao{
     private final Map<String, Cidade> cidades;
     protected Expressao proximo;
     protected String direcao;
-    protected Cidade cidadeAtual = new Cidade("nowHere",0.0,0.0);
+    protected Cidade cidadeAtual;
     protected abstract Cidade executar(Stack<Cidade> expressoes);
+    protected abstract String[] matchingWords();
     
     public AbstractAvaliadorDirecional(){
         cidades = new HashMap<>();
         
-        cidades.put("aberdeen", new Cidade("Aberdeen", 57.15, -2.15));
-        cidades.put("belfast", new Cidade("Belfast", 54.62, -5.93));
-        cidades.put("birmingham", new Cidade("Birmingham", 52.42, -1.92));
-        cidades.put("dublin", new Cidade("Dublin", 53.33, -6.25));
-        cidades.put("edinburgh", new Cidade("Edinburgh", 55.83, -4.25));
-        cidades.put("glasgow", new Cidade("Glasgow", 55.92, -4.25));
-        cidades.put("london", new Cidade("London", 51.53, -0.08));
-        cidades.put("liverpool", new Cidade("Liverpool", 53.42, -3.0));
-        cidades.put("manchester", new Cidade("Manchester", 53.5, -2.25));
-        cidades.put("southampton", new Cidade("Southampton", 50.9, -1.38));
+        cidades.put("Aberdeen", new Cidade("Aberdeen", 57.15, -2.15));
+        cidades.put("Belfast", new Cidade("Belfast", 54.62, -5.93));
+        cidades.put("Birmingham", new Cidade("Birmingham", 52.42, -1.92));
+        cidades.put("Dublin", new Cidade("Dublin", 53.33, -6.25));
+        cidades.put("Edinburgh", new Cidade("Edinburgh", 55.83, -4.25));
+        cidades.put("Glasgow", new Cidade("Glasgow", 55.92, -4.25));
+        cidades.put("London", new Cidade("London", 51.53, -0.08));
+        cidades.put("Liverpool", new Cidade("Liverpool", 53.42, -3.0));
+        cidades.put("Manchester", new Cidade("Manchester", 53.5, -2.25));
+        cidades.put("Southampton", new Cidade("Southampton", 50.9, -1.38));
         
     }
     
@@ -61,15 +62,18 @@ public abstract class AbstractAvaliadorDirecional implements Expressao{
         Stack<Cidade> expressoes = new Stack<>();
         boolean palavraEncontrada = false;
         
-        if(direcao == null || direcao.equals("")){
+        if(matchingWords().length == 0){
             palavraEncontrada = true;
         }
-        
-        for (String token: rota.split(" ")){
+       
+        for(String token: matchingWords()){
             if(cidades.containsKey(token)){
                 expressoes.push(cidades.get(token));
             }
-            else if(direcao.equals(token) || palavraEncontrada == true){
+        }
+        
+        for(String token: rota.split(" ")){
+            if(direcao.equals(token) || palavraEncontrada == true){
                 palavraEncontrada = true;
                 this.cidadeAtual = executar(expressoes);
             } 
@@ -77,6 +81,7 @@ public abstract class AbstractAvaliadorDirecional implements Expressao{
                 this.cidadeAtual = proximo.interpreter(rota);
             }
         }
+        
         return this.cidadeAtual;
     }
 }

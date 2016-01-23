@@ -16,20 +16,27 @@ import java.util.Stack;
  */
 public class MaisNorte extends AbstractAvaliadorDirecional{
     
-    public MaisNorte() {
+    public MaisNorte(){
         this.direcao = "Norte";
+    }
+    
+    @Override
+    protected String[] matchingWords() {
+        return new String[]{"Norte"};
     }
     
     @Override
     public Cidade executar(Stack<Cidade> expressoes) {
         Cidade cidadeResultante = this.cidadeAtual;
-        while(expressoes.empty() == false){
+        while(!expressoes.empty()){
             Cidade token = expressoes.pop();
-            if(cidadeResultante.getLongitude()< token.getLongitude()){
+            if(cidadeResultante.getLatitude()< token.getLatitude()){
                 cidadeResultante = token;
             }
         }
         return cidadeResultante;
     }
+
+    
     
 }

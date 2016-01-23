@@ -19,11 +19,16 @@ public class MaisSul extends AbstractAvaliadorDirecional{
     }
     
     @Override
+    protected String[] matchingWords() {
+        return new String[]{"Sul"};
+    }
+    
+    @Override
     public Cidade executar(Stack<Cidade> expressoes) {
         Cidade cidadeResultante = this.cidadeAtual;
-        while(expressoes.empty() == false){
+        while(!expressoes.empty()){
             Cidade token = expressoes.pop();
-            if(cidadeResultante.getLongitude()< token.getLongitude()){
+            if(cidadeResultante.getLatitude()< token.getLatitude()){
                 cidadeResultante = token;
             }
         }
