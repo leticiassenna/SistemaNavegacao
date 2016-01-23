@@ -7,9 +7,7 @@ package br.ifes.leticia.sistemanavegacao.model;
 
 import br.ifes.leticia.sistemanavegacao.control.Cidade;
 import br.ifes.leticia.sistemanavegacao.control.Expressao;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
@@ -20,6 +18,10 @@ import java.util.Stack;
 public abstract class AbstractAvaliadorDirecional implements Expressao{
     private final Map<String, Cidade> cidades;
     protected Expressao proximo;
+    
+    protected String palavraChave;
+    protected Cidade cidadeAtual = new Cidade("nowHere",0.0,0.0);
+    protected abstract Cidade executar(Stack<Cidade> expressoes);
     
     public AbstractAvaliadorDirecional(){
         cidades = new HashMap<>();
@@ -57,35 +59,26 @@ public abstract class AbstractAvaliadorDirecional implements Expressao{
     
     @Override
     public Cidade interpreter(String rota){
-        Stack<Expressao> expressaoStack = new Stack<>();
+        Stack<Cidade> expressoes = new Stack<>();
+        Cidade cidade = null;
+        boolean palavraEncontrada = false;
+        
+        if(palavraChave == null || palavraChave.equals("")){
+            palavraEncontrada = true;
+        }
         
         for (String token: rota.split(" ")){
-            if (cidades.containsKey(token)){
-                Cidade cidade = cidades.get(rota);
-                expressaoStack.push(new ExpressaoCidade(cidade));
-                
-            }else if (token.equals("Norte")){
-                expressaoStack.push(new MaisNorte(carregarExpressoes(expressaoStack)));
-                
-            }else if (token.equals("Sul")){
-                expressaoStack.push(new MaisSul(carregarExpressoes(expressaoStack)));
-                
-            }else if (token.equals("Leste")){
-                expressaoStack.push(new MaisLeste(carregarExpressoes(expressaoStack)));
-                
-            }else {
-                expressaoStack.push(new MaisOeste(carregarExpressoes(expressaoStack)));
+            if(cidades.containsKey(token)){
+                expressoes.push(cidades.get(token));
+            }
+            else if(palavraChave.equals(token) || palavraEncontrada == true){
+                palavraEncontrada = true;
+                cidade = executar(expressoes);
+            } 
+            else {
+                cidade = proximo.interpreter(rota);
             }
         }
-        return expressaoStack.pop().interpreter(rota);
-    }
-    
-    private List<Expressao> carregarExpressoes(Stack<Expressao> expressoesStack){
-        List<Expressao> expressoes = new ArrayList<>();
-        
-        while (!expressoesStack.empty()){
-            expressoes.add(expressoesStack.pop());
-        }
-        return expressoes;
+        return cidade;
     }
 }
