@@ -22,7 +22,15 @@ public abstract class AbstractAvaliadorDirecional implements Expressao{
     protected Cidade cidadeAtual;
     protected abstract Cidade executar(Stack<Cidade> expressoes);
     protected abstract String[] matchingWords();
-    
+
+    public Expressao getProximo() {
+        return proximo;
+    }
+
+    public String getDirecao() {
+        return this.direcao;
+    }
+   
     public AbstractAvaliadorDirecional(){
         cidades = new HashMap<>();
         

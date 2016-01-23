@@ -4,6 +4,12 @@
  * and open the template in the editor.
  */
 
+import br.ifes.leticia.sistemanavegacao.control.Expressao;
+import br.ifes.leticia.sistemanavegacao.model.MaisLeste;
+import br.ifes.leticia.sistemanavegacao.model.MaisNorte;
+import br.ifes.leticia.sistemanavegacao.model.MaisOeste;
+import br.ifes.leticia.sistemanavegacao.model.MaisSul;
+import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,20 +26,18 @@ public class TesteNavegacao {
     public TesteNavegacao() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
+    @Test
+    public void TesteSentido(){
+        MaisLeste leste = new MaisLeste();
+        Assert.assertEquals("Leste", leste.getDirecao());
     }
     
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
+    @Test
+    public void TesteProximo(){
+        MaisLeste leste = new MaisLeste();
+        MaisNorte norte = new MaisNorte();
+        leste.proximaExpressao(norte);
+        Assert.assertEquals(norte, leste.getProximo());
     }
 
     // TODO add test methods here.
