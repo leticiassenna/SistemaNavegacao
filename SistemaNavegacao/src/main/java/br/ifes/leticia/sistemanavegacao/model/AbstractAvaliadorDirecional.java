@@ -18,8 +18,7 @@ import java.util.Stack;
 public abstract class AbstractAvaliadorDirecional implements Expressao{
     private final Map<String, Cidade> cidades;
     protected Expressao proximo;
-    
-    protected String palavraChave;
+    protected String direcao;
     protected Cidade cidadeAtual = new Cidade("nowHere",0.0,0.0);
     protected abstract Cidade executar(Stack<Cidade> expressoes);
     
@@ -41,10 +40,10 @@ public abstract class AbstractAvaliadorDirecional implements Expressao{
     
     public static Cidade processar(String entrada){
         
-        Expressao leste = new MaisLeste(null);
-        Expressao norte = new MaisNorte(null);
-        Expressao oeste = new MaisOeste(null);
-        Expressao sul = new MaisSul(null);
+        Expressao leste = new MaisLeste();
+        Expressao norte = new MaisNorte();
+        Expressao oeste = new MaisOeste();
+        Expressao sul = new MaisSul();
         leste.proximaExpressao(norte);
         norte.proximaExpressao(oeste);
         oeste.proximaExpressao(sul);
@@ -60,10 +59,9 @@ public abstract class AbstractAvaliadorDirecional implements Expressao{
     @Override
     public Cidade interpreter(String rota){
         Stack<Cidade> expressoes = new Stack<>();
-        Cidade cidade = null;
         boolean palavraEncontrada = false;
         
-        if(palavraChave == null || palavraChave.equals("")){
+        if(direcao == null || direcao.equals("")){
             palavraEncontrada = true;
         }
         
@@ -71,14 +69,14 @@ public abstract class AbstractAvaliadorDirecional implements Expressao{
             if(cidades.containsKey(token)){
                 expressoes.push(cidades.get(token));
             }
-            else if(palavraChave.equals(token) || palavraEncontrada == true){
+            else if(direcao.equals(token) || palavraEncontrada == true){
                 palavraEncontrada = true;
-                cidade = executar(expressoes);
+                this.cidadeAtual = executar(expressoes);
             } 
             else {
-                cidade = proximo.interpreter(rota);
+                this.cidadeAtual = proximo.interpreter(rota);
             }
         }
-        return cidade;
+        return this.cidadeAtual;
     }
 }

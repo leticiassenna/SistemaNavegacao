@@ -11,9 +11,9 @@ package br.ifes.leticia.sistemanavegacao.control;
  * @author Leticia
  */
 public class Cidade {
-    private final String nome;
-    private final double latitude;
-    private final double longitude;
+    private String nome;
+    private double latitude;
+    private double longitude;
 
     public Cidade(String nome, double latitude, double longitude) {
         this.nome = nome;
