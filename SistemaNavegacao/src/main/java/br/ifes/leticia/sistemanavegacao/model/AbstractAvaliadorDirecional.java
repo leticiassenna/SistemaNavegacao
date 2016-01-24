@@ -17,9 +17,9 @@ import java.util.Stack;
  */
 public abstract class AbstractAvaliadorDirecional implements Expressao{
     private final Map<String, Cidade> cidades;
-    protected Expressao proximo;
+    protected AbstractAvaliadorDirecional proximo;
     protected String direcao;
-    protected Cidade cidadeAtual;
+    protected Cidade cidadeAtual = new Cidade("aqui", 0, 0);
     protected abstract Cidade executar(Stack<Cidade> expressoes);
     protected abstract String[] matchingWords();
 
@@ -38,8 +38,8 @@ public abstract class AbstractAvaliadorDirecional implements Expressao{
         cidades.put("Belfast", new Cidade("Belfast", 54.62, -5.93));
         cidades.put("Birmingham", new Cidade("Birmingham", 52.42, -1.92));
         cidades.put("Dublin", new Cidade("Dublin", 53.33, -6.25));
-        cidades.put("Edinburgh", new Cidade("Edinburgh", 55.83, -4.25));
-        cidades.put("Glasgow", new Cidade("Glasgow", 55.92, -4.25));
+        cidades.put("Edinburgh", new Cidade("Edinburgh", 55.92, -3.02));
+        cidades.put("Glasgow", new Cidade("Glasgow", 55.83, -4.25));
         cidades.put("London", new Cidade("London", 51.53, -0.08));
         cidades.put("Liverpool", new Cidade("Liverpool", 53.42, -3.0));
         cidades.put("Manchester", new Cidade("Manchester", 53.5, -2.25));
@@ -49,10 +49,10 @@ public abstract class AbstractAvaliadorDirecional implements Expressao{
     
     public static Cidade processar(String entrada){
         
-        Expressao leste = new MaisLeste();
-        Expressao norte = new MaisNorte();
-        Expressao oeste = new MaisOeste();
-        Expressao sul = new MaisSul();
+        AbstractAvaliadorDirecional leste = new MaisLeste();
+        AbstractAvaliadorDirecional norte = new MaisNorte();
+        AbstractAvaliadorDirecional oeste = new MaisOeste();
+        AbstractAvaliadorDirecional sul = new MaisSul();
         leste.proximaExpressao(norte);
         norte.proximaExpressao(oeste);
         oeste.proximaExpressao(sul);
@@ -61,8 +61,8 @@ public abstract class AbstractAvaliadorDirecional implements Expressao{
     }
     
     @Override
-    public void proximaExpressao(Expressao proximo) {
-        this.proximo = proximo;
+    public void proximaExpressao(AbstractAvaliadorDirecional prox) {
+        this.proximo = prox;
     }
     
     @Override
@@ -74,22 +74,19 @@ public abstract class AbstractAvaliadorDirecional implements Expressao{
             palavraEncontrada = true;
         }
        
-        for(String token: matchingWords()){
+        for(String token: rota.split(" ")){
+            
             if(cidades.containsKey(token)){
                 expressoes.push(cidades.get(token));
             }
-        }
-        
-        for(String token: rota.split(" ")){
-            if(direcao.equals(token) || palavraEncontrada == true){
+            if(direcao.equals(token) || palavraEncontrada == true ){
                 palavraEncontrada = true;
                 this.cidadeAtual = executar(expressoes);
             } 
             else {
-                this.cidadeAtual = proximo.interpreter(rota);
+                this.cidadeAtual = this.proximo.interpreter(rota);
             }
         }
-        
         return this.cidadeAtual;
     }
 }

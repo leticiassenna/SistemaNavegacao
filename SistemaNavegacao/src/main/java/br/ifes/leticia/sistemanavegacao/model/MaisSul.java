@@ -28,7 +28,7 @@ public class MaisSul extends AbstractAvaliadorDirecional{
         Cidade cidadeResultante = this.cidadeAtual;
         while(!expressoes.empty()){
             Cidade token = expressoes.pop();
-            if(cidadeResultante.getLatitude()< token.getLatitude()){
+            if(cidadeResultante.getLatitude()> token.getLatitude()){
                 cidadeResultante = token;
             }
         }

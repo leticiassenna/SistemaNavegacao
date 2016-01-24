@@ -15,7 +15,7 @@ import br.ifes.leticia.sistemanavegacao.model.AbstractAvaliadorDirecional;
 public class Application {
     public static void main(String[] args) {
         
-        Cidade cidadeSelecionada = AbstractAvaliadorDirecional.processar("Dublin Belfast Edinburgh Glasgow Norte");
-        System.out.println(cidadeSelecionada.getNome());
+        Cidade cidadeSelecionada = AbstractAvaliadorDirecional.processar("Norte Dublin Belfast Edinburgh Glasgow");
+        System.out.println("Cidade: " + cidadeSelecionada.getNome());
     }
 }

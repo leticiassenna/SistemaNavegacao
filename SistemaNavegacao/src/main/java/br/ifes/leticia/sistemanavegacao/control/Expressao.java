@@ -5,11 +5,13 @@
  */
 package br.ifes.leticia.sistemanavegacao.control;
 
+import br.ifes.leticia.sistemanavegacao.model.AbstractAvaliadorDirecional;
+
 /**
  *
  * @author Leticia
  */
 public interface Expressao {
     public Cidade interpreter(String rota);
-    public void proximaExpressao(Expressao proximo);
+    public void proximaExpressao(AbstractAvaliadorDirecional proximo);
 }
