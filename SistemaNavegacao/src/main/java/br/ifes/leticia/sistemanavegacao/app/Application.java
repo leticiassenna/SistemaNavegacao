@@ -16,6 +16,6 @@ public class Application {
     public static void main(String[] args) {
         
         Cidade cidadeSelecionada = AbstractAvaliadorDirecional.processar("Norte Dublin Belfast Edinburgh Glasgow");
-        System.out.println("Cidade: " + cidadeSelecionada.getNome());
+        cidadeSelecionada.toString();
     }
 }
